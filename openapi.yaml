@@ -1,0 +1,179 @@
+openapi: 3.0.0
+info:
+    title: citiesDirectory Integration API
+    description: External API for citiesDirectory
+    license:
+        name: Proprietary
+    version: 1.1.22
+    x-packages:
+      - name: citiesDirectory_integration
+        language: python
+        library: urllib3
+servers:
+    -
+        url: /api/external/v1
+paths:
+    /regions/:
+        get:
+            tags:
+                - regions
+            summary: Check added regions
+            description: Проверка наличия регионов
+            operationId: recentPurchaseСheck
+            responses:
+                '200':
+                    description: Region to check exists
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RegionsList'
+                '404':
+                    description: No regions
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Detail'
+                '400':
+                    description: bad request
+        post:
+            tags:
+                - regions
+            summary: Request to add region
+            description: Заявка на добавление региона
+            operationId: regionsAdd
+            requestBody:
+                description: region request body
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/regionsAdd'
+                required: true
+            responses:
+                '201':
+                    description: Region added
+                '422':
+                    description: Region already added
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Detail'
+                '400':
+                    description: Bad request
+    /regions/{search}:
+        get:
+            tags:
+                - regions
+            summary: 'search region by name'
+            description: 'Поиск региона по названию'
+            operationId: getRegionsByName
+            parameters:
+                - name: search
+                  in: path
+                  description: region name
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: List of all regions by region name
+                '404':
+                    description: No promo products by code
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Detail'
+                '400':
+                    description: Invalid promo code
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Detail'
+    /regions/{pk}:
+        put:
+            tags:
+                - regions
+            summary: Update name region
+            description: Обновление названия региона
+            operationId: putRegionName
+            parameters:
+                - name: pk
+                  in: path
+                  description: Number of Region
+                  required: true
+                  schema:
+                      type: integer
+            requestBody:
+                description: Create name region
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateRegionName'
+            responses:
+                '200':
+                    description: Region updated successfully
+                '404':
+                    description: No regions
+        delete:
+            tags:
+                - regions
+            summary: Delete regions
+            description: Удаление региона
+            parameters:
+                - name: pk
+                  in: path
+                  description: Number of Region
+                  required: true
+                  schema:
+                      type: integer
+            responses:
+                '200':
+                    description: Region deleted successfully
+                '404':
+                    description: No regions
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Detail'
+
+components:
+    schemas:
+        Detail:
+            type: object
+            properties:
+                detail:
+                    type: string
+        RegionsList:
+              type: array
+              items:
+                $ref: '#/components/schemas/Region'
+        Region:
+            required:
+                - id
+                - name
+            type: object
+            properties:
+                id:
+                    description: 'Индентификатор региона'
+                    type: integer
+                name:
+                    description: 'Название региона'
+                    type: string
+        regionsAdd:
+            type: object
+            required:
+                - region_name
+            properties:
+                region_name:
+                    type: string
+        UpdateRegionName:
+            required:
+                - name
+            type: object
+            properties:
+                name:
+                    description: Название региона
+                    type: string
+tags:
+    -
+        name: regions
+        description: Regions methods
