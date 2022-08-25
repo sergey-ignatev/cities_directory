@@ -5,7 +5,9 @@ from citiesDirectory.apps.service_regions.models import RegionDirectory
 
 
 class ValidateQueryParams(serializers.Serializer):
-
+    """
+    Additional check of query parameters
+    """
     search = fields.CharField(
         required=False
     )

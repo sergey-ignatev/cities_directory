@@ -9,7 +9,7 @@ class RegionsUDCView(
     generics.DestroyAPIView
 ):
     """
-    View for creating, deleting and editing of Regions
+    View for deleting and editing of Regions
     """
 
     queryset = RegionDirectory.objects.all()

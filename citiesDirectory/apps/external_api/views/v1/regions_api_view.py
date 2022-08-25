@@ -1,3 +1,5 @@
+from django.db import models
+
 from rest_framework import generics
 from rest_framework import filters
 
@@ -16,7 +18,7 @@ class RegionsView(
     filter_backends = (filters.SearchFilter, filters.OrderingFilter)
     serializer_class = RegionSerializer
 
-    def get_queryset(self):
+    def get_queryset(self) -> models.QuerySet:
         """
         Searches the database in relation to the query sent by the region name.
         :return: Django queryset object containing search results.
