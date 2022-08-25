@@ -1,0 +1,4 @@
+POSTGRES_USER=cities
+POSTGRES_PASSWORD=xoroshii_parol
+POSTGRES_DB=cities_directory_db
+DATABASE_HOST=cities_directory_postgres

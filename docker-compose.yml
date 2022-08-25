@@ -1,0 +1,24 @@
+version: '2.2'
+services:
+  web:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8892:8000"
+    volumes:
+      - ./:/app
+    env_file:
+      - .env/development/cities_directory_postgres
+    depends_on:
+      - cities_directory_postgres
+
+  cities_directory_postgres:
+    image: postgres:14.3
+    container_name: stroy-postgres
+    volumes:
+      - db_cities:/var/lib/postgresql/data
+    env_file:
+      - .env/development/cities_directory_postgres
+
+volumes:
+  db_cities:
